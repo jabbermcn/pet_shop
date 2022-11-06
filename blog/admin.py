@@ -1,6 +1,18 @@
 from django.contrib import admin
 
-from blog.models import Post, Contact
+from blog.models import Post, Contact, Comment
 
-admin.site.register(Post)
-admin.site.register(Contact)
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title', 'subtitle')}
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass

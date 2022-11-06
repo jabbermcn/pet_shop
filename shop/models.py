@@ -4,15 +4,15 @@ from django.db import models
 class Category(models.Model):
     name = models.CharField(
         max_length=24,
-        verbose_name='название',
-        help_text='Макс. 24 символа'
+        verbose_name='name',
+        help_text='max. 24 symbols'
     )
     descr = models.CharField(
         max_length=140,
         blank=True,
         null=True,
-        verbose_name='описание',
-        help_text='Макс. 140 символов'
+        verbose_name='description',
+        help_text='max. 140 symbols'
     )
 
     def __str__(self):
@@ -20,49 +20,56 @@ class Category(models.Model):
 
     class Meta:
         db_table = 'shop_categories'
-        verbose_name = 'категория'
-        verbose_name_plural = 'категории'
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
         ordering = ('name',)
 
 
 class Product(models.Model):
     title = models.CharField(
         max_length=36,
-        verbose_name='название',
-        help_text='Макс. 36 символов'
+        verbose_name='title',
+        help_text='max. 36 symbols'
     )
     descr = models.CharField(
         max_length=140,
         null=True,
         blank=True,
-        verbose_name='описание',
-        help_text='Макс. 140 символов'
+        verbose_name='description',
+        help_text='max. 140 symbols'
     )
     article = models.CharField(
         max_length=16,
         unique=True,
-        verbose_name='Артикль',
-        help_text='Макс. 16 символов'
+        verbose_name='article',
+        help_text='max. 16 symbols'
     )
     price = models.DecimalField(
         decimal_places=2,
         max_digits=8,
         default=0,
-        verbose_name='цена',
-        help_text='Макс. 999999.99'
+        verbose_name='price',
+        help_text='max. 999999.99'
+    )
+    weight = models.DecimalField(
+        decimal_places=2,
+        max_digits=4,
+        default=0,
+        verbose_name='weight',
+        help_text='min. 0.1'
     )
     count = models.PositiveSmallIntegerField(
         default=0,
-        verbose_name='количество'
+        verbose_name='count'
     )
     category = models.ForeignKey(
         'Category',
         on_delete=models.PROTECT,
-        verbose_name='категория'
+        verbose_name='category'
     )
     image = models.ImageField(
         upload_to='products/',
-        verbose_name='картинка',
+        verbose_name='image',
         null=True,
         blank=True
     )
@@ -72,6 +79,6 @@ class Product(models.Model):
 
     class Meta:
         db_table = 'shop_products'
-        verbose_name = 'товар'
-        verbose_name_plural = 'товары'
+        verbose_name = 'product'
+        verbose_name_plural = 'products'
         ordering = ('price', 'title', 'article')

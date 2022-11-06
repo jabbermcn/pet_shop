@@ -1,8 +1,7 @@
-from django.http import HttpRequest
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 from blog.forms import ContactForm
-from blog.models import Post
+from blog.models import Post, Comment
 
 
 class ContextMixin:
@@ -29,6 +28,21 @@ class PostListView(ContextMixin, ListView):
         return context
 
 
+class CommentListView(ContextMixin, ListView):
+    model = Comment
+    template_name = 'blog/detail.html'
+    context_object_name = 'comments'
+
+    def get_queryset(self):
+        return Comment.objects.filter(is_published=True).order_by('date_published')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(CommentListView, self).get_context_data()
+        context.update(self.context)
+        context['user'] = self.request.user
+        return context
+
+
 class PostDetailView(ContextMixin, DetailView):
     model = Post
     template_name = 'blog/detail.html'
@@ -42,8 +56,10 @@ class PostDetailView(ContextMixin, DetailView):
         return context
 
 
-class ContactCreateView(ContextMixin, TemplateView):
+class ContactCreateView(ContextMixin, CreateView):
     template_name = 'blog/contact.html'
+    form_class = ContactForm
+    success_url = '/contact/'
 
     def get_context_data(self, **kwargs):
         context = super(ContactCreateView, self).get_context_data()
@@ -51,9 +67,3 @@ class ContactCreateView(ContextMixin, TemplateView):
         context['contact_form'] = ContactForm()
         context['user'] = self.request.user
         return context
-
-    def post(self, request: HttpRequest):
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return self.get(request=request)

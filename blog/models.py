@@ -81,3 +81,43 @@ class Contact(models.Model):
         verbose_name = 'subject'
         verbose_name_plural = 'subjects'
         ordering = ('date_created',)
+
+
+class Comment(models.Model):
+    title = models.CharField(
+        max_length=24,
+        verbose_name='title'
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.DO_NOTHING,
+        verbose_name='author'
+    )
+    date_published = models.DateTimeField(
+        default=now(),
+        verbose_name='date published'
+    )
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name='is published'
+    )
+    image = models.ImageField(
+        upload_to='comments/',
+        verbose_name='image'
+    )
+    message = models.CharField(
+        max_length=512,
+        verbose_name='message'
+    )
+
+    def get_absolute_url(self):
+        return reverse('detail', args=[self.author])
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        db_table = 'blog_comments'
+        verbose_name = 'comment'
+        verbose_name_plural = 'comments'
+        ordering = ('date_published',)
