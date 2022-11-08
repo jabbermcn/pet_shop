@@ -82,3 +82,47 @@ class Product(models.Model):
         verbose_name = 'product'
         verbose_name_plural = 'products'
         ordering = ('price', 'title', 'article')
+
+
+class Professional(models.Model):
+    first_name = models.CharField(
+        max_length=24,
+        verbose_name='first_name',
+        help_text='max. 24 symbols'
+    )
+    last_name = models.CharField(
+        max_length=24,
+        verbose_name='last_name',
+        help_text='max. 24 symbols'
+    )
+    image = models.ImageField(
+        upload_to='professionals/',
+        verbose_name='image',
+        null=True,
+        blank=True
+    )
+    linkedin = models.URLField(
+        blank=True
+    )
+    facebook = models.URLField(
+        blank=True
+    )
+    twitter = models.URLField(
+        blank=True
+    )
+    descr = models.CharField(
+        max_length=140,
+        blank=True,
+        null=True,
+        verbose_name='description',
+        help_text='max. 140 symbols'
+    )
+
+    def __str__(self):
+        return self.first_name
+
+    class Meta:
+        db_table = 'shop_professional'
+        verbose_name = 'professional'
+        verbose_name_plural = 'professionals'
+        ordering = ('first_name', 'last_name')

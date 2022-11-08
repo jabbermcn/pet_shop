@@ -5,22 +5,53 @@ from shop.models import Product
 
 class ContextMixin:
     context = {
-        'site_title': 'PET SHOP - Pet Shop Website',
+        'site_title': 'PET SHOP',
+        'site_name': 'mikhailouski_n',
         'facebook': 'https://facebook.com',
         'twitter': 'https://twitter.com',
+        'linkedin': 'https://linkedin.com',
+        'instagram': 'https://instagram.com',
+        'address': 'ул. Старовиленский тракт 28/1, Минск',
+        'email': 'jabber_mcn@tut.by',
+        'phone': '+375 29 5692410',
+        'Get_In_Touch_text': 'Here some text',
+        'lorem_ipsum': 'lorem ipsum text'
     }
 
 
 class HomeTemplateView(ContextMixin, TemplateView):
     template_name = 'shop/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomeTemplateView, self).get_context_data()
+        context.update(self.context)
+        context['user'] = self.request.user
+        return context
 
-class BaseTemplateView(ContextMixin, TemplateView):
-    template_name = 'shop/base.html'
+
+class ServiceTemplateView(ContextMixin, TemplateView):
+    template_name = 'shop/service.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ServiceTemplateView, self).get_context_data()
+        context.update(self.context)
+        context['user'] = self.request.user
+        return context
 
 
 class AboutTemplateView(ContextMixin, TemplateView):
     template_name = 'shop/about.html'
+    context_object_name = 'professionals'
+
+    @staticmethod
+    def get_queryset():
+        return Product.objects.all.order_by('first_name')
+
+    def get_context_data(self, **kwargs):
+        context = super(AboutTemplateView, self).get_context_data()
+        context.update(self.context)
+        context['user'] = self.request.user
+        return context
 
 
 class ProductTemplateView(ContextMixin, TemplateView):

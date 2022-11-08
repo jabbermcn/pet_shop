@@ -6,10 +6,16 @@ from blog.models import Post, Comment
 
 class ContextMixin:
     context = {
-        'site_title': 'VeryCoolNewsPortal',
+        'site_title': 'PET SHOP',
+        'site_name': 'mikhailouski_n',
         'facebook': 'https://facebook.com',
         'twitter': 'https://twitter.com',
-        'github': 'https://github.com',
+        'linkedin': 'https://linkedin.com',
+        'instagram': 'https://instagram.com',
+        'address': 'ул. Старовиленский тракт 28/1, Минск',
+        'email': 'jabber_mcn@tut.by',
+        'phone': '+375 29 5692410',
+        'Get_In_Touch_text': 'Here some text'
     }
 
 
