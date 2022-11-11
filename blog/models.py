@@ -83,6 +83,21 @@ class Contact(models.Model):
         ordering = ('date_created',)
 
 
+class Email(models.Model):
+    email = models.CharField(
+        max_length=24,
+        verbose_name='email'
+    )
+
+    def __str__(self):
+        return self.email
+
+    class Meta:
+        db_table = 'blog_email'
+        verbose_name = 'email'
+        verbose_name_plural = 'emails'
+
+
 class Comment(models.Model):
     title = models.CharField(
         max_length=24,

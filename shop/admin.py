@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from shop.models import Category, Product, Professional
+from shop.models import Category, Product, Professional, Client
 
 
 class ProductTabularInline(admin.TabularInline):
@@ -19,4 +19,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Professional)
 class ProductAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
     pass

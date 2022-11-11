@@ -126,3 +126,38 @@ class Professional(models.Model):
         verbose_name = 'professional'
         verbose_name_plural = 'professionals'
         ordering = ('first_name', 'last_name')
+
+
+class Client(models.Model):
+    first_name = models.CharField(
+        max_length=24,
+        verbose_name='first_name',
+        help_text='max. 24 symbols'
+    )
+    last_name = models.CharField(
+        max_length=24,
+        verbose_name='last_name',
+        help_text='max. 24 symbols'
+    )
+    image = models.ImageField(
+        upload_to='clients/',
+        verbose_name='image',
+        null=True,
+        blank=True
+    )
+    descr = models.CharField(
+        max_length=140,
+        blank=True,
+        null=True,
+        verbose_name='description',
+        help_text='max. 140 symbols'
+    )
+
+    def __str__(self):
+        return self.first_name
+
+    class Meta:
+        db_table = 'shop_client'
+        verbose_name = 'client'
+        verbose_name_plural = 'clients'
+        ordering = ('first_name', 'last_name')

@@ -1,6 +1,6 @@
 from django.forms import ModelForm, TextInput, Textarea, EmailInput
 
-from blog.models import Contact
+from blog.models import Contact, Email
 
 
 class ContactForm(ModelForm):
@@ -34,6 +34,21 @@ class ContactForm(ModelForm):
                     'class': 'form-control',
                     'rows': '8',
                     'placeholder': 'Enter your message',
+                }
+            )
+        }
+
+
+class EmailForm(ModelForm):
+    class Meta:
+        model = Email
+        fields = ('email',)
+        widgets = {
+            'email': TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'type': 'text',
+                    'placeholder': 'Enter your email',
                 }
             )
         }

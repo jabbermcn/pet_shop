@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView, CreateView
 
-from blog.forms import ContactForm
+from blog.forms import ContactForm, EmailForm
 from blog.models import Post, Comment
 
 
@@ -71,5 +71,6 @@ class ContactCreateView(ContextMixin, CreateView):
         context = super(ContactCreateView, self).get_context_data()
         context.update(self.context)
         context['contact_form'] = ContactForm()
+        context['email_form'] = EmailForm()
         context['user'] = self.request.user
         return context
