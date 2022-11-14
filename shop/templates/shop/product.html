@@ -21,8 +21,8 @@ active
             <div class="pb-5">
                 <div class="product-item position-relative bg-light d-flex flex-column text-center">
                     <img class="img-fluid mb-4" src="{{ product.image.url }}" alt="">
-                    <h6 class="text-uppercase">{{ comment.title }}</h6>
-                    <h5 class="text-primary mb-0">{{ comment.price }}</h5>
+                    <h6 class="text-uppercase">{{ product.title }}</h6>
+                    <h5 class="text-primary mb-0">{{ product.price }} {{ product.currency }}</h5>
                     <div class="btn-action d-flex justify-content-center">
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-cart"></i></a>
                         <a class="btn btn-primary py-2 px-3" href=""><i class="bi bi-eye"></i></a>

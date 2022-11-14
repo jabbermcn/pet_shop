@@ -42,7 +42,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog', kwargs={'blog_slug': self.slug})
+        return reverse('detail-post', kwargs={'post_slug': self.slug})
 
     class Meta:
         db_table = 'blog_posts'
@@ -99,9 +99,18 @@ class Email(models.Model):
 
 
 class Comment(models.Model):
-    title = models.CharField(
+    email = models.CharField(
         max_length=24,
-        verbose_name='title'
+        null=True,
+        blank=True,
+        verbose_name='email'
+    )
+    post = models.ForeignKey(
+        Post,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        verbose_name='post'
     )
     author = models.ForeignKey(
         User,
@@ -111,10 +120,6 @@ class Comment(models.Model):
     date_published = models.DateTimeField(
         default=now(),
         verbose_name='date published'
-    )
-    is_published = models.BooleanField(
-        default=False,
-        verbose_name='is published'
     )
     image = models.ImageField(
         upload_to='comments/',
@@ -126,10 +131,10 @@ class Comment(models.Model):
     )
 
     def get_absolute_url(self):
-        return reverse('detail', args=[self.author])
+        return reverse('detail', args=[self.post])
 
     def __str__(self):
-        return self.title
+        return str(self.email)
 
     class Meta:
         db_table = 'blog_comments'

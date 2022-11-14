@@ -25,7 +25,7 @@ active
                                 <small><i class="bi bi-calendar-date me-2"></i>{{ post.date_published }}</small>
                             </div>
                             <h5 class="text-uppercase mb-3">{{ post.text }}</h5>
-                            <a class="text-primary text-uppercase" href="{{ post.slug }}">Read More<i
+                            <a class="text-primary text-uppercase" href="{{ post.get_absolute_url }}">Read More<i
                                     class="bi bi-chevron-right"></i></a>
                         </div>
                     </div>

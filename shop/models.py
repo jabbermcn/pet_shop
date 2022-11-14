@@ -51,6 +51,13 @@ class Product(models.Model):
         verbose_name='price',
         help_text='max. 999999.99'
     )
+    currency = models.CharField(
+        max_length=4,
+        null=True,
+        blank=True,
+        verbose_name='currency',
+        help_text='max. 4 symbols'
+    )
     weight = models.DecimalField(
         decimal_places=2,
         max_digits=4,

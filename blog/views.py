@@ -1,6 +1,7 @@
+from django.http import HttpRequest
 from django.views.generic import ListView, DetailView, CreateView
 
-from blog.forms import ContactForm, EmailForm
+from blog.forms import ContactForm, EmailForm, CommentForm
 from blog.models import Post, Comment
 
 
@@ -18,6 +19,12 @@ class ContextMixin:
         'Get_In_Touch_text': 'Here some text'
     }
 
+    def post(self, request: HttpRequest):
+        form = EmailForm(request.POST) or CommentForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return self.get(request=request)
+
 
 class PostListView(ContextMixin, ListView):
     model = Post
@@ -30,6 +37,7 @@ class PostListView(ContextMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PostListView, self).get_context_data()
         context.update(self.context)
+        context['email_form'] = EmailForm()
         context['user'] = self.request.user
         return context
 
@@ -45,6 +53,8 @@ class CommentListView(ContextMixin, ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CommentListView, self).get_context_data()
         context.update(self.context)
+        context['email_form'] = EmailForm()
+        context['comment_form'] = CommentForm()
         context['user'] = self.request.user
         return context
 
@@ -58,6 +68,9 @@ class PostDetailView(ContextMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(PostDetailView, self).get_context_data()
         context.update(self.context)
+        context['email_form'] = EmailForm()
+        context['comment_form'] = CommentForm()
+        context['comments'] = Comment.objects.filter(post__id=context[self.context_object_name].id)
         context['user'] = self.request.user
         return context
 

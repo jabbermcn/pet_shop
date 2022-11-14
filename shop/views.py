@@ -1,7 +1,8 @@
+from django.http import HttpRequest
 from django.views.generic import TemplateView
 
 from blog.forms import EmailForm
-from shop.models import Product, Client
+from shop.models import Product, Client, Professional
 
 
 class ContextMixin:
@@ -21,6 +22,12 @@ class ContextMixin:
         'vision': 'Text for vision',
     }
 
+    def post(self, request: HttpRequest):
+        form = EmailForm(request.POST)
+        if form.is_valid():
+            form.save()
+        return self.get(request=request)
+
 
 class HomeTemplateView(ContextMixin, TemplateView):
     template_name = 'shop/home.html'
@@ -39,13 +46,14 @@ class ServiceTemplateView(ContextMixin, TemplateView):
 
     @staticmethod
     def get_queryset():
-        return Client.objects.all
+        return Client.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(ServiceTemplateView, self).get_context_data()
         context.update(self.context)
         context['email_form'] = EmailForm()
         context['user'] = self.request.user
+        context[self.context_object_name] = self.get_queryset()
         return context
 
 
@@ -55,13 +63,14 @@ class AboutTemplateView(ContextMixin, TemplateView):
 
     @staticmethod
     def get_queryset():
-        return Product.objects.all.order_by('first_name')
+        return Professional.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(AboutTemplateView, self).get_context_data()
         context.update(self.context)
         context['email_form'] = EmailForm()
         context['user'] = self.request.user
+        context[self.context_object_name] = self.get_queryset()
         return context
 
 
@@ -72,11 +81,12 @@ class ProductTemplateView(ContextMixin, TemplateView):
 
     @staticmethod
     def get_queryset():
-        return Product.objects.all.order_by('price')
+        return Product.objects.all()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProductTemplateView, self).get_context_data()
         context.update(self.context)
         context['email_form'] = EmailForm()
         context['user'] = self.request.user
+        context[self.context_object_name] = self.get_queryset()
         return context
