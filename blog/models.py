@@ -106,7 +106,7 @@ class Comment(models.Model):
         verbose_name='email'
     )
     post = models.ForeignKey(
-        Post,
+        'Post',
         null=True,
         blank=True,
         on_delete=models.CASCADE,
@@ -117,21 +117,14 @@ class Comment(models.Model):
         on_delete=models.DO_NOTHING,
         verbose_name='author'
     )
-    date_published = models.DateTimeField(
-        default=now(),
-        verbose_name='date published'
-    )
-    image = models.ImageField(
-        upload_to='comments/',
-        verbose_name='image'
-    )
+    # date_published = models.DateTimeField(
+    #     default=now(),
+    #     verbose_name='date published'
+    # )
     message = models.CharField(
         max_length=512,
         verbose_name='message'
     )
-
-    def get_absolute_url(self):
-        return reverse('detail', args=[self.post])
 
     def __str__(self):
         return str(self.email)
@@ -140,4 +133,3 @@ class Comment(models.Model):
         db_table = 'blog_comments'
         verbose_name = 'comment'
         verbose_name_plural = 'comments'
-        ordering = ('date_published',)

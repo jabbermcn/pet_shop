@@ -57,7 +57,7 @@ class EmailForm(ModelForm):
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
-        fields = ('email', 'author', 'message')
+        fields = ('email', 'author', 'message', 'post')
         widgets = {
             'author': TextInput(
                 attrs={

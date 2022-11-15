@@ -19,11 +19,16 @@ class ContextMixin:
         'Get_In_Touch_text': 'Here some text'
     }
 
-    def post(self, request: HttpRequest):
-        form = EmailForm(request.POST) or CommentForm(request.POST)
-        if form.is_valid():
-            form.save()
-        return self.get(request=request)
+    def post(self, request, post_slug):
+        if request.POST.get('form') == 'commentForm':
+            form = CommentForm(request.POST)
+            if form.is_valid():
+                form.save()
+        elif request.POST.get('form') == 'emailForm':
+            form = EmailForm(request.POST)
+            if form.is_valid():
+                form.save()
+        return self.get(request=request, post_slug=post_slug)
 
 
 class PostListView(ContextMixin, ListView):
@@ -32,7 +37,8 @@ class PostListView(ContextMixin, ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.filter(is_published=True).order_by('date_published')
+        return Post.objects.all()
+        # return Post.objects.filter(is_published=True).order_by('date_published')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PostListView, self).get_context_data()
@@ -48,10 +54,12 @@ class CommentListView(ContextMixin, ListView):
     context_object_name = 'comments'
 
     def get_queryset(self):
-        return Comment.objects.filter(is_published=True).order_by('date_published')
+        return Comment.objects.all()
+        # return Comment.objects.filter(is_published=True).order_by('date_published')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CommentListView, self).get_context_data()
+        context['comments'] = Comment.objects.filter(post__id=context[self.context_object_name].id)
         context.update(self.context)
         context['email_form'] = EmailForm()
         context['comment_form'] = CommentForm()
