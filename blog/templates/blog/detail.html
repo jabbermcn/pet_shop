@@ -12,7 +12,7 @@ Detail Page
         <div class="col-lg-8">
             <!-- Blog Detail Start -->
             <div class="mb-5">
-                <img class="img-fluid w-100 rounded mb-5" src="{% static 'img/blog-1.jpg' %}" alt="">
+                <img class="img-fluid w-100 rounded mb-5" src="{{ post.image.url }}" alt="">
                 <h1 class="text-uppercase mb-4">Some text title</h1>
                 <p>Some text</p>
             </div>
@@ -23,11 +23,10 @@ Detail Page
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">{{ comments.count }}</h3>
                 {% for comment in comments %}
                 <div class="d-flex mb-4">
-<!--                    <img src="{{ comment.image.url }}" class="img-fluid" style="width: 45px; height: 45px;">-->
                     <div class="ps-3">
                         <h6><a href="">{{ comment.author }}</a> <small><i>{{ comment.date_published }}</i></small></h6>
                         <p>{{ comment.message }}</p>
-                        <button class="btn btn-sm btn-light">Reply</button>
+<!--                        <button class="btn btn-sm btn-light">Reply</button>-->
                     </div>
                 </div>
                 {% endfor %}
@@ -40,15 +39,10 @@ Detail Page
                 <form method="post">
                     <input name="form" value="commentForm" hidden>
                     <input name="post" value="{{ post.id }}" hidden>
-<!--                    <input name="date_published" value="{{ date_published }}" hidden>-->
+                    <input name="author" value="{{ user.id }}" hidden>
+                    <input name="email" value="{{ user.email }}" hidden>
                     {% csrf_token %}
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6">
-                            {{ comment_form.author }}
-                        </div>
-                        <div class="col-12 col-sm-6">
-                            {{ comment_form.email }}
-                        </div>
                         <div class="col-12">
                             {{ comment_form.message }}
                         </div>
@@ -76,44 +70,10 @@ Detail Page
             <div class="mb-5">
                 <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Recent Post</h3>
                 <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="{% static 'img/blog-1.jpg' %}"
+                    <img class="img-fluid" src="{{ post.image.url }}"
                          style="width: 100px; height: 100px; object-fit: cover;"
                          alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis
-                        elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="{% static 'img/blog-2.jpg' %}"
-                         style="width: 100px; height: 100px; object-fit: cover;"
-                         alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis
-                        elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="{% static 'img/blog-2.jpg' %}"
-                         style="width: 100px; height: 100px; object-fit: cover;"
-                         alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis
-                        elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="{% static 'img/blog-1.jpg' %}"
-                         style="width: 100px; height: 100px; object-fit: cover;"
-                         alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis
-                        elit
-                    </a>
-                </div>
-                <div class="d-flex overflow-hidden mb-3">
-                    <img class="img-fluid" src="{% static 'img/blog-2.jpg' %}"
-                         style="width: 100px; height: 100px; object-fit: cover;"
-                         alt="">
-                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">Lorem ipsum dolor sit amet adipis
-                        elit
-                    </a>
+                    <a href="" class="h5 d-flex align-items-center bg-light px-3 mb-0">{{ post.text }}</a>
                 </div>
             </div>
             <!-- Recent Post End -->

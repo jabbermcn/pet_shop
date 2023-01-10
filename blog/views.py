@@ -1,4 +1,3 @@
-from django.http import HttpRequest
 from django.views.generic import ListView, DetailView, CreateView
 
 from blog.forms import ContactForm, EmailForm, CommentForm
@@ -19,13 +18,17 @@ class ContextMixin:
         'Get_In_Touch_text': 'Here some text'
     }
 
-    def post(self, request, post_slug):
+    def post(self, request, post_slug=None):
         if request.POST.get('form') == 'commentForm':
             form = CommentForm(request.POST)
             if form.is_valid():
                 form.save()
         elif request.POST.get('form') == 'emailForm':
             form = EmailForm(request.POST)
+            if form.is_valid():
+                form.save()
+        elif request.POST.get('form') == 'contactForm':
+            form = ContactForm(request.POST)
             if form.is_valid():
                 form.save()
         return self.get(request=request, post_slug=post_slug)
@@ -37,14 +40,12 @@ class PostListView(ContextMixin, ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.all()
-        # return Post.objects.filter(is_published=True).order_by('date_published')
+        return Post.objects.filter(is_published=True).order_by('date_published')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(PostListView, self).get_context_data()
         context.update(self.context)
         context['email_form'] = EmailForm()
-        context['user'] = self.request.user
         return context
 
 
@@ -54,8 +55,7 @@ class CommentListView(ContextMixin, ListView):
     context_object_name = 'comments'
 
     def get_queryset(self):
-        return Comment.objects.all()
-        # return Comment.objects.filter(is_published=True).order_by('date_published')
+        return Comment.objects.filter(is_published=True).order_by('date_published')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(CommentListView, self).get_context_data()
@@ -63,7 +63,6 @@ class CommentListView(ContextMixin, ListView):
         context.update(self.context)
         context['email_form'] = EmailForm()
         context['comment_form'] = CommentForm()
-        context['user'] = self.request.user
         return context
 
 
@@ -79,7 +78,6 @@ class PostDetailView(ContextMixin, DetailView):
         context['email_form'] = EmailForm()
         context['comment_form'] = CommentForm()
         context['comments'] = Comment.objects.filter(post__id=context[self.context_object_name].id)
-        context['user'] = self.request.user
         return context
 
 

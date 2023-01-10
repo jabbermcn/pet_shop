@@ -25,7 +25,7 @@ class Post(models.Model):
         verbose_name='is published'
     )
     date_published = models.DateTimeField(
-        default=now(),
+        default=now,
         verbose_name='date published'
     )
     author = models.ForeignKey(
@@ -69,7 +69,7 @@ class Contact(models.Model):
         verbose_name='message'
     )
     date_created = models.DateTimeField(
-        default=now(),
+        default=now,
         verbose_name='date created'
     )
 
@@ -117,10 +117,10 @@ class Comment(models.Model):
         on_delete=models.DO_NOTHING,
         verbose_name='author'
     )
-    # date_published = models.DateTimeField(
-    #     default=now(),
-    #     verbose_name='date published'
-    # )
+    date_published = models.DateTimeField(
+        default=now,
+        verbose_name='date published'
+    )
     message = models.CharField(
         max_length=512,
         verbose_name='message'
